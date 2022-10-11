@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-const Home = ({ store, companies, deleteDetail, searchData }) => {
+const Home = ({ companies, searchData, deleteDetail }) => {
 
   const [detail, setdetail] = useState(companies);
   const [order, setorder] = useState("ASC");
-
-  console.log({searchData});
-  console.log({store});
 
   useEffect(() => {
     if(searchData.length > 0) {
@@ -16,9 +13,11 @@ const Home = ({ store, companies, deleteDetail, searchData }) => {
     }
   }, [searchData]);
 
+  useEffect(() => {
+    setdetail(companies);
+  }, [companies]);
+
   const sorting = (col) => {
-    console.log({ order });
-    console.log({ col });
     if (order === "ASC") {
       const sorted = [...detail].sort((a, b) => {
         if (typeof a[col] == "number") {
@@ -29,7 +28,6 @@ const Home = ({ store, companies, deleteDetail, searchData }) => {
       });
       setdetail(sorted);
       setorder("DSC")
-      console.log({ sorted });
     } else {
       const sorted = [...detail].sort((a, b) => {
         if (typeof a[col] == "number")
@@ -39,7 +37,6 @@ const Home = ({ store, companies, deleteDetail, searchData }) => {
       });
       setdetail(sorted);
       setorder("ASC")
-      console.log({ sorted });
     }
   };
 
@@ -77,7 +74,7 @@ const Home = ({ store, companies, deleteDetail, searchData }) => {
                       </Link>
                       <button
                         type="button"
-                        onClick={() => deleteDetail(detail.id)}
+                        onClick={() => deleteDetail(element.id)}
                         className="btn btn-sm btn-danger" style={{ marginLeft: "10px" }}
                       >
                         Delete
@@ -102,7 +99,6 @@ const Home = ({ store, companies, deleteDetail, searchData }) => {
 };
 
 const mapStateToProps = (state) => ({
-  store: state,
   companies: state.company,
   searchData: state.filters.search
 });

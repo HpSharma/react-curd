@@ -9,7 +9,6 @@ const Navbar = () => {
   const companies = useSelector(state => state.company);
   const filters = useSelector(state => state.filters.search);
 
-  console.log(filters);
   const dispatch = useDispatch();
 
   const [term, setTerm] = useState("");

@@ -17,10 +17,6 @@ const AddPost = ({ companies, addDetail }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(companies);
-    console.log(companies);
-
     const checkDetailsCompanyExists = companies.filter((detail) =>
       detail.company === company ? detail : null
     );

@@ -14,33 +14,26 @@ initialState.company = [
 export const detailReducer = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_DETAIL":
-      console.log(action);
-      state.company.push(action.payload)
-      state = { ...state };
-      return state;
+      let company = state.company;
+      company.push(action.payload);
+      return { ...state, company: company };
     case "DELETE_DETAIL":
       const detailFilter = state.company.filter((detail) =>
         detail.id === action.payload ? null : detail
       );
-      state.company = detailFilter;
-      return state;
+      return { ...state, company: detailFilter };
     case "UPDATE_DETAIL":
       const detailUpdate = state.company.filter((detail) =>
         detail.id === action.payload.id
           ? Object.assign(detail, action.payload)
           : detail
       );
-      state.company = detailUpdate;
-      return state;
+      return { ...state, company: detailUpdate };
     case "RESET_DETAIL":
       state = initialState;
       return state;
     case "COMPANY_FILTER":
-      console.log(state.filters.search);
-      state.filters.search = action.payload;
-      console.log(state.filters.search);
-      console.log({state});
-      return state;
+      return { ...state, filters: { search: action.payload } };
     default:
       return state;
   }
