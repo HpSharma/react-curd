@@ -1,8 +1,7 @@
 const initialState = {
   company: [],
   filters: {
-    search: [],
-    sort: []
+    search: []
   }
 };
 
@@ -34,6 +33,23 @@ export const detailReducer = (state = initialState, action) => {
       return state;
     case "COMPANY_FILTER":
       return { ...state, filters: { search: action.payload } };
+    case "SORT_ASC":
+      const sortedAsc = state.company.sort((a, b) => {
+        if (typeof a[action.payload] == "number") {
+          return a[action.payload] > b[action.payload] ? 1 : -1
+        } else {
+          return a[action.payload].toLowerCase() > b[action.payload].toLowerCase() ? 1 : -1
+        }
+      });
+      return { ...state, company: sortedAsc }
+    case "SORT_DESC":
+      const sortedDesc = state.company.sort((a, b) => {
+        if (typeof a[action.payload] == "number")
+          return a[action.payload] < b[action.payload] ? 1 : -1
+        else
+          return a[action.payload].toLowerCase() < b[action.payload].toLowerCase() ? 1 : -1
+      });
+      return { ...state, company: sortedDesc }
     default:
       return state;
   }

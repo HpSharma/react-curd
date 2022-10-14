@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const Home = ({ companies, searchData, deleteDetail }) => {
+
+  const dispatch = useDispatch();
 
   const [detail, setdetail] = useState(companies);
   const [order, setorder] = useState("ASC");
 
   useEffect(() => {
-    if(searchData.length > 0) {
+    if (searchData.length > 0) {
       setdetail(searchData);
     }
   }, [searchData]);
@@ -19,23 +22,10 @@ const Home = ({ companies, searchData, deleteDetail }) => {
 
   const sorting = (col) => {
     if (order === "ASC") {
-      const sorted = [...detail].sort((a, b) => {
-        if (typeof a[col] == "number") {
-          return a[col] > b[col] ? 1 : -1
-        } else {
-          return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
-        }
-      });
-      setdetail(sorted);
+      dispatch({ type: "SORT_ASC", payload: col });
       setorder("DSC")
     } else {
-      const sorted = [...detail].sort((a, b) => {
-        if (typeof a[col] == "number")
-          return a[col] < b[col] ? 1 : -1
-        else
-          return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
-      });
-      setdetail(sorted);
+      dispatch({ type: "SORT_DESC", payload: col });
       setorder("ASC")
     }
   };
